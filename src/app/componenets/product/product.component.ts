@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
-
+import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { CartService } from 'src/app/services/cart.service';
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
@@ -12,6 +14,7 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductComponent implements OnInit {
   products: Product[] = [];
   dataLoaded = false;
+  filterText="";
   /*productResponseModel:ProductResponseModel={
   data:this.products,
   message:"",
@@ -21,8 +24,11 @@ export class ProductComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private activatedRoute: ActivatedRoute
-  ) {} //direk class değişkeni şeklinde tanımlanır
+    private activatedRoute: ActivatedRoute,
+    private toastrService:ToastrService,
+    private cartService:CartService
+  
+    ) {} //direk class değişkeni şeklinde tanımlanır
 
   ngOnInit(): void {
     //observablelara subscribe olmam lazım
@@ -43,11 +49,22 @@ export class ProductComponent implements OnInit {
   }
 
   getProductsByCategory(categoryId: number) {
+  //  console.log(categoryId);
+    
     this.productService
       .getProductsByCategory(categoryId)
       .subscribe((response) => {
         this.products = response.data;
         this.dataLoaded = true;
+     //  console.log(this.products);
+        
       });
   }
+addToCart(product:Product){
+ 
+  this.toastrService.success("Sepete eklendi",product.productName)
+  this.cartService.addtoCart(product);
+
+}
+
 } //product componenent end

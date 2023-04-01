@@ -4,8 +4,8 @@
   <li (click)="setCurrentCategory(category)" 
   routerLink="/products/category/{{category.categoryId}}"
   *ngFor="let category of categories " 
-    
     [class]="getCurrentCategoryClass(category)">{{ category.categoryName }}
   </li>
+  
 </ul>
 <h5 *ngIf="currentCategory">{{currentCategory.categoryName}} seçtiniz</h5>
